@@ -1,15 +1,12 @@
 package com.tutorialspoint.mockito.mathapplication;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.spy;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 //@RunWith attaches a runner with the test class to initialize the test data
 @RunWith(MockitoJUnitRunner.class)
@@ -20,34 +17,41 @@ public class MathApplicationTest {
 
     @Before
     public void setUp() {
+
 	mathApplication = new MathApplication();
-	calcService = mock(CalculatorService.class);
+	Calculator calculator = new Calculator();
+	calcService = spy(calculator);
 	mathApplication.setCalculatorService(calcService);
     }
 
     @Test
     public void testAdd() {
 
-	// add the behavior to add numbers
-	when(calcService.add(20.0, 10.0)).thenAnswer(new Answer<Double>() {
-
-	    @Override
-	    public Double answer(InvocationOnMock invocation) throws Throwable {
-		// get the arguments passed to mock
-		Object[] args = invocation.getArguments();
-
-		// get the mock
-		Object mock = invocation.getMock();
-
-		// return the result
-		// return (Double) args[0] + (Double) args[1];
-
-		return 30.0;
-	    }
-	});
-
+	// perform operation on real object
 	// test the add functionality
 	Assert.assertEquals(mathApplication.add(20.0, 10.0), 30.0, 0);
 
+    }
+
+    class Calculator implements CalculatorService {
+	@Override
+	public double add(double input1, double input2) {
+	    return input1 + input2;
+	}
+
+	@Override
+	public double subtract(double input1, double input2) {
+	    throw new UnsupportedOperationException("Method not implemented yet!");
+	}
+
+	@Override
+	public double multiply(double input1, double input2) {
+	    throw new UnsupportedOperationException("Method not implemented yet!");
+	}
+
+	@Override
+	public double divide(double input1, double input2) {
+	    throw new UnsupportedOperationException("Method not implemented yet!");
+	}
     }
 }
