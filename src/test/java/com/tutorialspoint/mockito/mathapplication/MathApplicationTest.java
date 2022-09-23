@@ -1,6 +1,8 @@
 package com.tutorialspoint.mockito.mathapplication;
 
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,39 +21,23 @@ public class MathApplicationTest {
     public void setUp() {
 
 	mathApplication = new MathApplication();
-	Calculator calculator = new Calculator();
-	calcService = spy(calculator);
+	calcService = mock(CalculatorService.class);
 	mathApplication.setCalculatorService(calcService);
     }
 
     @Test
-    public void testAdd() {
+    public void testAddAndSubtract() {
 
-	// perform operation on real object
+	// add the behavior to add numbers
+	when(calcService.add(20.0, 10.0)).thenReturn(30.0);
+
 	// test the add functionality
 	Assert.assertEquals(mathApplication.add(20.0, 10.0), 30.0, 0);
 
-    }
+	// reset the mock
+	reset(calcService);
 
-    class Calculator implements CalculatorService {
-	@Override
-	public double add(double input1, double input2) {
-	    return input1 + input2;
-	}
-
-	@Override
-	public double subtract(double input1, double input2) {
-	    throw new UnsupportedOperationException("Method not implemented yet!");
-	}
-
-	@Override
-	public double multiply(double input1, double input2) {
-	    throw new UnsupportedOperationException("Method not implemented yet!");
-	}
-
-	@Override
-	public double divide(double input1, double input2) {
-	    throw new UnsupportedOperationException("Method not implemented yet!");
-	}
+	// test the add functionality after resetting the mock
+	Assert.assertEquals(mathApplication.add(20.0, 10.0), 30.0, 0);
     }
 }
