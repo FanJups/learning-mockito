@@ -1,8 +1,7 @@
 package com.tutorialspoint.mockito.mathapplication;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,18 +25,15 @@ public class MathApplicationTest {
     }
 
     @Test
-    public void testAddAndSubtract() {
+    public void testAdd() {
 
-	// add the behavior to add numbers
-	when(calcService.add(20.0, 10.0)).thenReturn(30.0);
+	// Given
+	given(calcService.add(20.0, 10.0)).willReturn(30.0);
 
-	// test the add functionality
-	Assert.assertEquals(mathApplication.add(20.0, 10.0), 30.0, 0);
+	// when
+	double result = calcService.add(20.0, 10.0);
 
-	// reset the mock
-	reset(calcService);
-
-	// test the add functionality after resetting the mock
-	Assert.assertEquals(mathApplication.add(20.0, 10.0), 30.0, 0);
+	// then
+	Assert.assertEquals(result, 30.0, 0);
     }
 }
