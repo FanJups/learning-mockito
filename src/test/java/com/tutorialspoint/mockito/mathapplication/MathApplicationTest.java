@@ -1,5 +1,6 @@
 package com.tutorialspoint.mockito.mathapplication;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
@@ -28,5 +29,8 @@ public class MathApplicationTest {
 
 	// test the add functionality
 	Assert.assertEquals(mathApplication.add(10.0, 20.0), 30.0, 0);
+
+	// verify the behavior
+	verify(calcService).add(10.0, 20.0);
     }
 }
